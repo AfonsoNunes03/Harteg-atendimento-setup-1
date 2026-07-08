@@ -1,6 +1,6 @@
 # Guia de Instalação de Pré-requisitos
 
-> Antes de começar o setup do ZX Control, instale os itens abaixo de acordo com o seu sistema operacional.
+> Antes de começar o setup da Harteg, instale os itens abaixo de acordo com o seu sistema operativo.
 > Depois de instalar tudo, volte para o terminal e execute: `python3 setup/check_prerequisites.py`
 
 ---
@@ -93,7 +93,7 @@ sudo apt install docker.io docker-compose-v2
 sudo usermod -aG docker $USER
 ```
 
-> **Importante:** Após rodar `usermod`, **feche e reabra o terminal** para que a permissão de grupo seja aplicada.
+> **Importante:** Após executar `usermod`, **feche e reabra o terminal** para que a permissão de grupo seja aplicada.
 
 Verifique: `docker --version` e `docker compose version`
 
@@ -101,7 +101,7 @@ Verifique: `docker --version` e `docker compose version`
 
 ## Windows (via WSL2)
 
-O setup do ZX Control roda dentro do **WSL2** (Windows Subsystem for Linux). Siga os passos abaixo.
+O setup da Harteg corre dentro do **WSL2** (Windows Subsystem for Linux). Siga os passos abaixo.
 
 ### Passo 1 — Instalar o WSL2
 
@@ -115,7 +115,7 @@ Reinicie o computador quando solicitado. Após reiniciar, o Ubuntu será instala
 
 ### Passo 2 — Configurar o Ubuntu no WSL2
 
-Abra o **Ubuntu** no menu Iniciar e crie seu usuário quando solicitado.
+Abra o **Ubuntu** no menu Iniciar e crie seu utilizador quando solicitado.
 
 ### Passo 3 — Seguir o guia Ubuntu
 
@@ -171,7 +171,7 @@ source ~/.zshrc
 
 Abra o Docker Desktop, aguarde ele iniciar completamente e tente novamente.
 
-**"permission denied" ao rodar docker no Ubuntu**
+**"permission denied" ao executar o docker no Ubuntu**
 
 ```bash
 sudo usermod -aG docker $USER

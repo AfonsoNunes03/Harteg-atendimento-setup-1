@@ -31,17 +31,17 @@ def save_config(config):
 def ask_student_phone():
     while True:
         try:
-            phone = input("Digite seu numero para receber o resumo diario (com DDD): ").strip()
+            phone = input("Digite o seu numero para receber o resumo diario (com indicativo do pais): ").strip()
         except (EOFError, KeyboardInterrupt):
             print()
             raise SystemExit("Setup cancelado.")
 
         digits = "".join(ch for ch in phone if ch.isdigit())
-        if not digits.startswith("55"):
-            digits = "55" + digits
+        if not digits.startswith("351"):
+            digits = "351" + digits
         if len(digits) >= 12:
             return digits
-        print("Numero invalido. Digite com DDD. Exemplo: 85999998888")
+        print("Numero invalido. Exemplo: 351912345678")
 
 
 def deploy_file(source, target):
@@ -82,7 +82,7 @@ def main():
     save_config(config)
 
     try:
-        answer = input("Quer rodar o primeiro health check agora? (s/n): ").strip().lower()
+        answer = input("Quer executar o primeiro health check agora? (s/n): ").strip().lower()
     except (EOFError, KeyboardInterrupt):
         answer = "n"
     if answer in {"s", "sim", "y", "yes"}:

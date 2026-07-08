@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Configuração do ambiente — ZX Control Semana 1
-Cria ~/.operacao-ia/ com estrutura de pastas e arquivo de configuração.
+Configuração do ambiente — Harteg Atendimento IA
+Cria ~/.operacao-ia/ com estrutura de pastas e ficheiro de configuração.
 """
 
 import json
@@ -23,7 +23,7 @@ def ensure_psutil():
         import psutil  # noqa: F401
         return True
     except ImportError:
-        print("  Instalando psutil para detectar RAM do sistema...")
+        print("  A instalar psutil para detetar a RAM do sistema...")
         result = subprocess.run(
             [sys.executable, "-m", "pip", "install", "psutil", "--quiet"],
             capture_output=True
@@ -37,7 +37,7 @@ def ensure_psutil():
 
 
 def get_ram_gb():
-    """Retorna RAM total em GB. Retorna 0 se não conseguir detectar."""
+    """Retorna RAM total em GB. Retorna 0 se não conseguir detetar."""
     try:
         import psutil
         ram_bytes = psutil.virtual_memory().total
@@ -83,7 +83,7 @@ def ask(prompt, default=""):
 
 
 def write_config(student_name, business_name, whatsapp_provider, ram_gb):
-    """Escreve o arquivo config.json."""
+    """Escreve o ficheiro config.json."""
     config = {
         "student_name": student_name,
         "business_name": business_name,
@@ -103,7 +103,7 @@ def write_config(student_name, business_name, whatsapp_provider, ram_gb):
 
 def main():
     print()
-    print("Configuração do Ambiente — ZX Control Semana 1")
+    print("Configuração do Ambiente — Harteg Atendimento IA")
     print("=" * 50)
     print()
 
@@ -112,9 +112,9 @@ def main():
     ram_gb = get_ram_gb() if psutil_ok else 0
 
     if ram_gb > 0:
-        print(f"  Memória RAM detectada: {ram_gb} GB")
+        print(f"  Memória RAM detetada: {ram_gb} GB")
     else:
-        print("  Não foi possível detectar RAM — usando configuração padrão.")
+        print("  Não foi possível detetar RAM — usando configuração padrão.")
 
     provider = choose_whatsapp_provider()
     print("  Provedor WhatsApp padrao: Evolution API (local, gratuito)")
@@ -122,17 +122,17 @@ def main():
         print("  ⚠️  Aviso: abaixo de 8GB de RAM a Evolution pode ficar instavel.")
         print("  ⚠️  Se precisar, voce pode usar Z-API depois como fallback manual.")
     elif ram_gb >= 8 and ram_gb < 16:
-        print("  ⚠️  Aviso: 8GB de RAM e o minimo recomendado para a Evolution rodar bem.")
+        print("  ⚠️  Aviso: 8GB de RAM e o minimo recomendado para a Evolution funcionar bem.")
         print("  ⚠️  16GB ou mais e o ideal para maior estabilidade.")
     elif ram_gb >= 16:
-        print("  ✅ Sua memoria esta em uma faixa ideal para rodar a Evolution com mais estabilidade.")
+        print("  ✅ Sua memoria esta em uma faixa ideal para a Evolution correr com mais estabilidade.")
     else:
         print("  ⚠️  Nao foi possivel medir a RAM. A Evolution seguira como padrao.")
 
     print()
 
     # 2. Criar estrutura de pastas
-    print(f"  Criando pasta ~/.operacao-ia/ ...")
+    print(f"  A criar a pasta ~/.operacao-ia/ ...")
     created = create_directory_structure()
 
     if created:
@@ -144,7 +144,7 @@ def main():
 
     print()
 
-    # 3. Coletar dados do aluno
+    # 3. Recolher dados do aluno
     print("  Agora preciso de algumas informações sobre você.")
     print()
 

@@ -17,7 +17,7 @@ CONFIG_PATH = BASE_DIR / "config" / "config.json"
 def load_config():
     if not CONFIG_PATH.exists():
         print("Aviso: configuracao nao encontrada.")
-        print("   Rode primeiro: python3 setup/setup_environment.py")
+        print("   Execute primeiro: python3 setup/setup_environment.py")
         return None
     return json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
 
@@ -46,7 +46,7 @@ def ask(prompt):
 
 def validate_credentials(instance_id, token, client_token=""):
     url = f"https://api.z-api.io/instances/{instance_id}/token/{token}/status"
-    headers = {"User-Agent": "ZXControl/1.0"}
+    headers = {"User-Agent": "Harteg/1.0"}
     if client_token:
         headers["Client-Token"] = client_token
     request = urllib.request.Request(url, headers=headers, method="GET")
@@ -118,7 +118,7 @@ def main():
         except (EOFError, KeyboardInterrupt):
             reuse = "s"
         if reuse not in ("n", "nao", "no"):
-            print("  Reutilizando credenciais existentes.")
+            print("  A reutilizar credenciais existentes.")
         else:
             instance_id = ask("Digite o ZAPI_INSTANCE_ID")
             token = ask("Digite o ZAPI_TOKEN")
@@ -128,7 +128,7 @@ def main():
         token = ask("Digite o ZAPI_TOKEN")
         client_token = ask("Digite o ZAPI_CLIENT_TOKEN (token de seguranca da conta)")
 
-    print("  Validando conexao com a Z-API...")
+    print("  A validar a ligacao com a Z-API...")
     try:
         status_code, payload = validate_credentials(instance_id, token, client_token)
     except urllib.error.HTTPError as exc:
@@ -158,7 +158,7 @@ def main():
     print()
     print("✅ Z-API configurada com sucesso!")
     print(f"  Instancia: {instance_id[:8]}...")
-    print("  Credenciais salvas em ~/.operacao-ia/config/config.json")
+    print("  Credenciais guardadas em ~/.operacao-ia/config/config.json")
     print()
 
 

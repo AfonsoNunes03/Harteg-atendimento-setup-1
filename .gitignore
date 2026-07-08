@@ -1,2 +1,15 @@
 .wrangler/
 graphify-out/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Ambiente/segredos locais (nunca devem ir para o repo)
+.env
+*.env
+
+# SO
+.DS_Store

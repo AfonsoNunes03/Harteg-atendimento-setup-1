@@ -1,4 +1,4 @@
-# ZX Control — Semana 2
+# Harteg — Fase 2
 
 ## O que entra nesta etapa
 
@@ -7,7 +7,7 @@
 - Heartbeat em 3 camadas
 - Checkpoint/resume para continuar um setup interrompido
 
-## Como rodar
+## Como executar
 
 ```bash
 python3 setup/setup_week2.py
@@ -16,7 +16,7 @@ python3 setup/setup_week2.py
 O setup da semana 2:
 
 1. Copia os scripts novos para `~/.operacao-ia/scripts/`
-2. Salva a configuração em `~/.operacao-ia/config/config.json`
+2. Guarda a configuração em `~/.operacao-ia/config/config.json`
 3. Gera `~/.operacao-ia/config/week2_checkpoint.json`
 4. Sobe o servidor local de webhooks e o dashboard, se você confirmar
 
@@ -29,7 +29,7 @@ O setup da semana 2:
 
 ## Dashboard
 
-- Arquivo gerado em `~/.operacao-ia/dashboard/index.html`
+- Ficheiro gerado em `~/.operacao-ia/dashboard/index.html`
 - Servidor local padrão em `http://127.0.0.1:8783`
 
 ## Scripts principais

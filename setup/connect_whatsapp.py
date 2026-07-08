@@ -23,7 +23,7 @@ INSTANCE_NAME = "operacao-ia"
 def load_config():
     if not CONFIG_PATH.exists():
         print("Aviso: configuracao nao encontrada.")
-        print("   Rode primeiro: python3 setup/setup_environment.py")
+        print("   Execute primeiro: python3 setup/setup_environment.py")
         return None
 
     return json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
@@ -43,7 +43,7 @@ def get_evolution_config(config):
     api_key = evolution.get("api_key")
     if not api_key:
         print("Aviso: API key da Evolution nao encontrada no config.json.")
-        print("   Rode primeiro: python3 setup/install_evolution.py")
+        print("   Execute primeiro: python3 setup/install_evolution.py")
         return None, None
     return base_url.rstrip("/"), api_key
 
@@ -189,7 +189,7 @@ def main():
     if not ensure_instance(base_url, api_key):
         return
 
-    print("  Gerando QR Code...")
+    print("  A gerar o QR Code...")
     try:
         qr_response = call_api(base_url, api_key, f"/instance/connect/{INSTANCE_NAME}")
     except Exception as exc:
@@ -205,16 +205,16 @@ def main():
         save_qr_image(qr_base64)
         open_qr_image()
     except Exception as exc:
-        print(f"Aviso: nao foi possivel salvar ou abrir o QR Code: {exc}")
+        print(f"Aviso: nao foi possivel guardar ou abrir o QR Code: {exc}")
         return
 
-    print(f"  ✅ QR salvo em {QR_PATH}")
-    print("  Escaneie o QR com o WhatsApp do celular.")
-    print("  Aguardando conexao...")
+    print(f"  ✅ QR guardado em {QR_PATH}")
+    print("  Escaneie o QR com o WhatsApp do telemóvel.")
+    print("  A aguardar a ligacao...")
 
     if not wait_for_connection(base_url, api_key):
         print("Aviso: o WhatsApp ainda nao conectou dentro do tempo esperado.")
-        print("   Rode novamente se o QR expirar.")
+        print("   Execute novamente se o QR expirar.")
         return
 
     config.setdefault("evolution", {})

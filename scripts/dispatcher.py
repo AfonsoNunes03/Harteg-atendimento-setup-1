@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Dispatcher flexivel de disparos WhatsApp.
-Este arquivo e a fonte do script deployado em ~/.operacao-ia/scripts/dispatcher.py.
+Este ficheiro e a fonte do script deployado em ~/.operacao-ia/scripts/dispatcher.py.
 """
 
 import argparse
@@ -99,9 +99,9 @@ def build_report(message, contacts, dry_run, tag):
 def main():
     parser = argparse.ArgumentParser(description="Dispatcher de disparos WhatsApp")
     parser.add_argument("--message", help="Mensagem direta")
-    parser.add_argument("--file", help="Arquivo .txt com a mensagem")
+    parser.add_argument("--file", help="Ficheiro .txt com a mensagem")
     parser.add_argument("--dry-run", action="store_true", help="Mostra preview sem enviar")
-    parser.add_argument("--tag", help="Filtra contatos por tag")
+    parser.add_argument("--tag", help="Filtra contactos por tag")
     parser.add_argument("--phones", nargs="+", help="Lista direta de telefones")
     args = parser.parse_args()
 
@@ -112,10 +112,10 @@ def main():
     report = build_report(message, contacts, args.dry_run, args.tag)
 
     if not contacts:
-        raise SystemExit("Nenhum contato encontrado para o filtro informado.")
+        raise SystemExit("Nenhum contacto encontrado para o filtro informado.")
 
     total = len(contacts)
-    print(f"Total de contatos: {total}")
+    print(f"Total de contactos: {total}")
     print(f"Dry-run: {'sim' if args.dry_run else 'nao'}")
     print()
 
@@ -124,7 +124,7 @@ def main():
     failed = 0
 
     for index, contact in enumerate(contacts, start=1):
-        name = contact.get("name") or "Contato"
+        name = contact.get("name") or "Contacto"
         phone = contact.get("phone") or ""
         rendered = message.replace("{nome}", name)
         prefix = f"Enviando {index}/{total}... {progress_bar(index, total)}"
@@ -140,7 +140,7 @@ def main():
             result["status"] = "skipped"
             result["detail"] = "duplicado"
             skipped += 1
-            print(f"{prefix} pulado (duplicado) -> {name}")
+            print(f"{prefix} ignorado (duplicado) -> {name}")
             report["results"].append(result)
             continue
 
@@ -148,7 +148,7 @@ def main():
             result["status"] = "skipped"
             result["detail"] = "rate_limiter"
             skipped += 1
-            print(f"{prefix} pulado (rate limiter) -> {name}")
+            print(f"{prefix} ignorado (rate limiter) -> {name}")
             report["results"].append(result)
             continue
 
@@ -192,8 +192,8 @@ def main():
     path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print()
-    print(f"Relatorio salvo em: {path}")
-    print(f"Resumo: {sent} enviados, {skipped} pulados, {failed} falhas")
+    print(f"Relatorio guardado em: {path}")
+    print(f"Resumo: {sent} enviados, {skipped} ignorados, {failed} falhas")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Agente IA BANT da Operacao IA.
-Este arquivo e a fonte do script deployado em ~/.operacao-ia/scripts/agent_bant.py.
+Agente IA BANT do Atendimento IA.
+Este ficheiro e a fonte do script deployado em ~/.operacao-ia/scripts/agent_bant.py.
 """
 
 import hashlib
@@ -29,10 +29,38 @@ from whatsapp_api_template import send_whatsapp
 
 CONFIG_PATH = Path.home() / ".operacao-ia" / "config" / "config.json"
 SESSIONS_DB = Path.home() / ".operacao-ia" / "data" / "sessions.db"
+CONTACTS_DB = Path.home() / ".operacao-ia" / "data" / "contacts.db"
 AGENT_STATE = Path.home() / ".operacao-ia" / "data" / ".agent_state.json"
 DEFAULT_AGENT_PORT = 8781
 SESSION_TTL = 1800
 STATE_CACHE_LIMIT = 5000
+ALLOWED_NAME_PREFIXES = ("lead", "cliente")
+_contacts_warned = False
+
+
+def is_allowed_contact(phone):
+    """So responde a contactos importados com nome comecando por Lead/Cliente."""
+    global _contacts_warned
+    if not CONTACTS_DB.exists():
+        if not _contacts_warned:
+            log.warning(
+                "contacts.db nao encontrado — nenhum contacto sera respondido ate "
+                "importar contactos (setup/import_contacts.py) com nomes 'Lead ...' ou 'Cliente ...'."
+            )
+            _contacts_warned = True
+        return False
+
+    conn = sqlite3.connect(str(CONTACTS_DB))
+    try:
+        row = conn.execute(
+            "SELECT name FROM contacts WHERE phone = ?", (phone,)
+        ).fetchone()
+    finally:
+        conn.close()
+
+    if not row or not row[0]:
+        return False
+    return row[0].strip().lower().startswith(ALLOWED_NAME_PREFIXES)
 
 DEFAULT_AGENT_NAME = "{{AGENT_NAME}}"
 DEFAULT_AGENT_TONE = "{{AGENT_TONE}}"
@@ -97,7 +125,7 @@ def cleanup_expired_sessions():
 def build_system_prompt(config):
     agent_name = config.get("agent_name") or DEFAULT_AGENT_NAME or "Ana"
     agent_tone = config.get("agent_tone") or DEFAULT_AGENT_TONE or "vendas"
-    business_name = config.get("business_name", "Operacao IA")
+    business_name = config.get("business_name", "Atendimento IA")
 
     tone_map = {
         "vendas": "consultiva, persuasiva, leve e objetiva",
@@ -107,29 +135,29 @@ def build_system_prompt(config):
     tone_text = tone_map.get(agent_tone, tone_map["geral"])
 
     return f"""
-Voce e {agent_name}, atendente da {business_name}.
+Você é {agent_name}, atendente da {business_name}.
 
 Objetivo:
 - Conduzir conversas de WhatsApp com naturalidade.
-- Qualificar a pessoa usando BANT de forma sutil.
-- Levar a conversa para fechamento ou proximo passo quando fizer sentido.
+- Qualificar a pessoa usando BANT de forma subtil.
+- Levar a conversa para o fecho ou próximo passo quando fizer sentido.
 
-Metodo BANT:
-- Budget: entender capacidade ou abertura para investir
-- Authority: descobrir se a pessoa decide ou consulta alguem
-- Need: identificar a dor real e o objetivo
-- Timeline: entender urgencia e quando quer agir
+Método BANT:
+- Budget: perceber a capacidade ou abertura para investir
+- Authority: perceber se a pessoa decide ou consulta alguém
+- Need: identificar a necessidade real e o objetivo
+- Timeline: perceber a urgência e quando quer agir
 
 Regras:
-- Responda em portugues do Brasil.
-- Nunca soe robotica.
-- Use no maximo 3 a 5 linhas por resposta.
-- Faca uma pergunta por vez.
+- Responda em português de Portugal.
+- Nunca soe robótica.
+- Use no máximo 3 a 5 linhas por resposta.
+- Faça uma pergunta de cada vez.
 - Evite listas longas.
-- Seja pratica e humana.
+- Seja prática e humana.
 - Se faltar contexto, pergunte antes de assumir.
-- Se a pessoa demonstrar forte interesse, convide para o proximo passo de forma natural.
-- Nao invente promessas, numeros ou garantias que nao estejam na conversa.
+- Se a pessoa demonstrar forte interesse, convide para o próximo passo de forma natural.
+- Não invente promessas, números ou garantias que não estejam na conversa.
 
 Tom:
 - {tone_text}
@@ -228,7 +256,7 @@ def generate_reply(config, messages):
 
 def normalize_phone(value):
     digits = "".join(ch for ch in str(value or "") if ch.isdigit())
-    if digits.startswith("55") and len(digits) >= 12:
+    if digits.startswith("351") and len(digits) >= 12:
         return digits
     return digits
 
@@ -306,8 +334,8 @@ def extract_zapi_messages(config):
         if not _zapi_inbound_warned:
             log.warning(
                 "Z-API inbound nao configurado — a Z-API entrega mensagens por webhook, "
-                "nao por arquivo local. Configure 'zapi.messages_file' no config.json com o "
-                "arquivo onde seu webhook Z-API grava as mensagens recebidas."
+                "nao por ficheiro local. Configure 'zapi.messages_file' no config.json com o "
+                "ficheiro onde seu webhook Z-API grava as mensagens recebidas."
             )
             _zapi_inbound_warned = True
         return []
@@ -401,6 +429,10 @@ def send_agent_reply(phone, reply, config):
 def process_message(phone, text, config):
     cleanup_expired_sessions()
     if not phone or not text:
+        return
+
+    if not is_allowed_contact(phone):
+        log.info("contacto %s ignorado (nao marcado como lead/cliente)", phone)
         return
 
     session = load_session(phone) or {"messages": [], "last_activity": time.time()}

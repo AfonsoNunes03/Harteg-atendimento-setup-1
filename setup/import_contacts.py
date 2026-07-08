@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Importa contatos para ~/.operacao-ia/data/contacts.db e gera backup CSV.
+Importa contactos para ~/.operacao-ia/data/contacts.db e gera backup CSV.
 """
 
 import csv
@@ -44,16 +44,16 @@ def normalize_phone(value):
     digits = "".join(ch for ch in str(value or "") if ch.isdigit())
     if not digits:
         return ""
-    if not digits.startswith("55"):
-        digits = "55" + digits
-    # Mínimo: 55 + DDD(2) + número(8) = 12 dígitos (fixo) ou 13 (celular)
+    if not digits.startswith("351"):
+        digits = "351" + digits
+    # Portugal: 351 + numero de telemovel (9 digitos) = 12 digitos
     if len(digits) < 12:
         return ""
     return digits
 
 
 def parse_inline_contacts(first_line):
-    print("Cole um contato por linha no formato nome,telefone ou nome,telefone,tag.")
+    print("Cole um contacto por linha no formato nome,telefone ou nome,telefone,tag.")
     print("Finalize com uma linha vazia.")
     lines = [first_line]
     while True:
@@ -134,12 +134,12 @@ def export_current_contacts():
 
 def main():
     print()
-    print("Importacao de contatos")
+    print("Importacao de contactos")
     print("=" * 50)
     print()
 
     _ = load_config()
-    raw = input("Cole seus contatos (nome,telefone) ou informe o caminho de um CSV: ").strip()
+    raw = input("Cole seus contactos (nome,telefone) ou informe o caminho de um CSV: ").strip()
     if not raw:
         print("Aviso: nenhum dado informado. A importacao ficou pendente.")
         return
@@ -177,7 +177,7 @@ def main():
     backup_contacts(export_current_contacts())
 
     print()
-    print(f"✅ {imported} contatos importados, {invalid} invalidos ignorados")
+    print(f"✅ {imported} contactos importados, {invalid} invalidos ignorados")
     print(f"  Banco:  {CONTACTS_DB}")
     print(f"  Backup: {CONTACTS_CSV}")
     print()

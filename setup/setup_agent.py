@@ -58,7 +58,7 @@ def call_openai_test(api_key):
     request = urllib.request.Request(
         "https://api.openai.com/v1/chat/completions",
         data=payload,
-        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json", "User-Agent": "ZXControl/1.0"},
+        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json", "User-Agent": "Harteg/1.0"},
         method="POST",
     )
     with urllib.request.urlopen(request, timeout=30) as response:
@@ -76,7 +76,7 @@ def call_gemini_test(api_key):
     request = urllib.request.Request(
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
         data=payload,
-        headers={"Content-Type": "application/json", "x-goog-api-key": api_key, "User-Agent": "ZXControl/1.0"},
+        headers={"Content-Type": "application/json", "x-goog-api-key": api_key, "User-Agent": "Harteg/1.0"},
         method="POST",
     )
     with urllib.request.urlopen(request, timeout=30) as response:
@@ -99,7 +99,7 @@ def call_anthropic_test(api_key):
             "x-api-key": api_key,
             "anthropic-version": "2023-06-01",
             "content-type": "application/json",
-            "User-Agent": "ZXControl/1.0",
+            "User-Agent": "Harteg/1.0",
         },
         method="POST",
     )
@@ -181,7 +181,7 @@ def main():
                 f"# Gerado automaticamente por setup_agent.py em {datetime.now().isoformat()}",
                 "mkdir -p ~/.operacao-ia/logs",
                 "if pgrep -f 'python3 ~/.operacao-ia/scripts/agent_bant.py' >/dev/null; then",
-                "  echo \"Agente ja esta rodando.\"",
+                "  echo \"Agente ja esta a correr.\"",
                 "  exit 0",
                 "fi",
                 "nohup python3 ~/.operacao-ia/scripts/agent_bant.py >> ~/.operacao-ia/logs/agent.log 2>&1 &",

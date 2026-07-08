@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Verificador de pré-requisitos — ZX Control Semana 1
+Verificador de pré-requisitos — Harteg Atendimento IA
 Verifica Python, Node.js, Git e Docker antes de iniciar o setup.
 """
 
@@ -123,7 +123,7 @@ def check_docker():
 
 
 def print_install_hint(name):
-    """Imprime instruções de instalação por sistema operacional."""
+    """Imprime instruções de instalação por sistema operativo."""
     hints = {
         "Python": {
             "macOS":   "brew install python@3.11",
@@ -158,7 +158,7 @@ def print_install_hint(name):
 
 def main():
     print()
-    print("Verificando pré-requisitos do ZX Control...")
+    print("A verificar os pré-requisitos da Harteg...")
     print("=" * 50)
 
     checks = [

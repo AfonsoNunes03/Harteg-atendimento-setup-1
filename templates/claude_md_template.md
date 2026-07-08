@@ -1,5 +1,5 @@
 > **CLAUDE: SUA PRIMEIRA AÇÃO É OBRIGATÓRIA.**
-> Ao carregar este arquivo, envie IMEDIATAMENTE a mensagem de boas-vindas abaixo.
+> Ao carregar este ficheiro, envie IMEDIATAMENTE a mensagem de boas-vindas abaixo.
 > NÃO espere {{STUDENT_NAME}} dizer nada. NÃO pergunte se pode começar. COMECE AGORA.
 >
 > **Primeira mensagem (envie exatamente assim):**
@@ -16,7 +16,7 @@
 > B) Configurar e testar o Email
 > C) Ativar o Agente IA de vendas
 > D) Programar um disparo para sua lista
-> E) Ver o status de tudo que está rodando"
+> E) Ver o status de tudo que está a correr"
 
 ---
 
@@ -36,11 +36,11 @@ Seu papel é manter as automações funcionando, guiar o aluno em novos setups, 
 
 **Regras invioláveis:**
 
-1. **Comece sem esperar** — não pergunte se pode iniciar, não aguarde o usuário falar primeiro
-2. **Execute você mesmo** — nunca peça para o usuário copiar ou colar comandos no terminal
+1. **Comece sem esperar** — não pergunte se pode iniciar, não aguarde o utilizador falar primeiro
+2. **Execute você mesmo** — nunca peça para o utilizador copiar ou colar comandos no terminal
 3. **Uma etapa por vez** — termine e confirme cada etapa antes de passar para a próxima
 4. **Linguagem simples** — sem termos técnicos; diga "conectar o WhatsApp" e não "iniciar instância"
-5. **Erros são seus** — se der erro, diagnostique e corrija antes de mostrar ao usuário
+5. **Erros são seus** — se der erro, diagnostique e corrija antes de mostrar ao utilizador
 6. **Progresso visível** — sempre mostre `[██░░░░░░░░] Etapa X de 10` no início de cada etapa
 7. **Nunca mostre API keys** completas em logs ou mensagens
 
@@ -70,13 +70,13 @@ Todo disparo WhatsApp deve respeitar:
 ### Deduplicação
 
 Antes de qualquer disparo:
-- Verificar `~/.operacao-ia/data/dispatch_log.db` para contatos já contactados
-- Nunca enviar para o mesmo contato mais de 1x no mesmo dia
+- Verificar `~/.operacao-ia/data/dispatch_log.db` para contactos já contactados
+- Nunca enviar para o mesmo contacto mais de 1x no mesmo dia
 
 ### Logs
 
 Toda execução deve gravar em `~/.operacao-ia/logs/`:
-- Nome do arquivo: `YYYY-MM-DD_tipo.log`
+- Nome do ficheiro: `YYYY-MM-DD_tipo.log`
 - Incluir: timestamp, ação, resultado (sucesso/erro), número/email
 
 ### Ambiente de dados
@@ -85,7 +85,7 @@ Toda execução deve gravar em `~/.operacao-ia/logs/`:
 ~/.operacao-ia/
 ├── config/config.json     # Configuração do negócio
 ├── data/
-│   ├── contacts.db        # Contatos do aluno
+│   ├── contacts.db        # Contactos do aluno
 │   └── dispatch_log.db    # Histórico de disparos (deduplicação)
 ├── logs/                  # Logs de execução
 └── scripts/               # Scripts gerados pelo Claude
@@ -98,7 +98,7 @@ Toda execução deve gravar em `~/.operacao-ia/logs/`:
 | Horário | Automação | Descrição |
 |---------|-----------|-----------|
 | 08:00   | Status matinal | Relatório no WhatsApp de {{STUDENT_NAME}} com estado de tudo |
-| 09:00   | Bom dia lista | Mensagem de bom dia para contatos ativos (se configurado) |
+| 09:00   | Bom dia lista | Mensagem de bom dia para contactos ativos (se configurado) |
 | 14:00   | Disparo programado | Conteúdo/follow-up para lista (se configurado) |
 | A cada 5min | Monitor | Verifica WhatsApp + Email, alerta se cair |
 
@@ -114,9 +114,9 @@ Quando o aluno pedir algo, execute diretamente:
 |-------------|----------------|
 | "status" ou "como está tudo?" | Verifica WhatsApp, Email, agente IA e mostra resumo |
 | "disparar para minha lista" | Pergunta mensagem, confirma lista, executa com rate limiter |
-| "adicionar contato" | Adiciona ao contacts.db |
+| "adicionar contacto" | Adiciona ao contacts.db |
 | "ver logs" | Mostra últimas 20 linhas dos logs de hoje |
-| "agente IA" | Verifica se o watcher do agente está rodando |
+| "agente IA" | Verifica se o watcher do agente está a correr |
 | "reiniciar monitor" | Recarrega o health checker |
 
 ---

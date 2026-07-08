@@ -47,7 +47,7 @@ def main():
                 "# Exemplos de uso:",
                 "# Dry-run simples:",
                 "#   ~/.operacao-ia/scripts/dispatcher.py --message \"Oi {nome}, passando para te avisar...\" --dry-run",
-                "# Disparo real com arquivo:",
+                "# Disparo real com ficheiro:",
                 "#   ~/.operacao-ia/scripts/dispatcher.py --file ~/.operacao-ia/data/mensagem.txt",
                 "# Filtrando por tag:",
                 "#   ~/.operacao-ia/scripts/dispatcher.py --message \"Oi {nome}\" --tag clientes --dry-run",
@@ -62,7 +62,7 @@ def main():
     print("✅ Dispatcher configurado!")
     print("Exemplos:")
     print("  Dry-run: ~/.operacao-ia/scripts/enviar.sh --message \"Oi {nome}\" --dry-run")
-    print("  Arquivo: ~/.operacao-ia/scripts/enviar.sh --file ~/.operacao-ia/data/mensagem.txt")
+    print("  Ficheiro: ~/.operacao-ia/scripts/enviar.sh --file ~/.operacao-ia/data/mensagem.txt")
     print("  Por tag: ~/.operacao-ia/scripts/enviar.sh --message \"Oi {nome}\" --tag clientes --dry-run")
     print()
 

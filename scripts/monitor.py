@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Monitor de saude da Operacao IA.
-Este arquivo e a fonte do script deployado em ~/.operacao-ia/scripts/monitor.py.
+Monitor de saude do Atendimento IA.
+Este ficheiro e a fonte do script deployado em ~/.operacao-ia/scripts/monitor.py.
 """
 
 import argparse
@@ -30,7 +30,7 @@ from whatsapp_api_template import send_whatsapp
 BASE_DIR = Path.home() / ".operacao-ia"
 CONFIG_PATH = BASE_DIR / "config" / "config.json"
 LOGS_DIR = BASE_DIR / "logs"
-PLIST_LABEL = "br.zxlab.operacao-ia.monitor"
+PLIST_LABEL = "com.harteg.operacao-ia.monitor"
 PLIST_PATH = Path.home() / "Library" / "LaunchAgents" / f"{PLIST_LABEL}.plist"
 
 
@@ -43,7 +43,7 @@ def save_config(config):
 
 
 def http_json(url, headers=None, method="GET", timeout=15):
-    h = {"User-Agent": "ZXControl/1.0"}
+    h = {"User-Agent": "Harteg/1.0"}
     if headers:
         h.update(headers)
     request = urllib.request.Request(url, headers=h, method=method)
@@ -125,7 +125,7 @@ def check_agent_process():
         )
         running = "agent_bant.py" in result.stdout
         status["ok"] = running
-        status["details"] = "processo rodando" if running else "processo nao encontrado"
+        status["details"] = "processo a correr" if running else "processo nao encontrado"
     except Exception as exc:
         status["details"] = str(exc)
     return status
@@ -144,11 +144,11 @@ def build_html(report):
         )
 
     return (
-        "<html><head><meta charset='utf-8'><title>Status Operacao IA</title>"
+        "<html><head><meta charset='utf-8'><title>Status Atendimento IA</title>"
         "<style>body{font-family:Arial,sans-serif;padding:24px;}table{border-collapse:collapse;width:100%;}"
         "td,th{border:1px solid #ddd;padding:8px;text-align:left;}th{background:#f4f4f4;}</style>"
         "</head><body>"
-        f"<h1>Status Operacao IA - {html.escape(report['generated_at'])}</h1>"
+        f"<h1>Status Atendimento IA - {html.escape(report['generated_at'])}</h1>"
         "<table><tr><th>Servico</th><th>Status</th><th>Detalhes</th></tr>"
         + "".join(rows)
         + "</table></body></html>"
@@ -161,7 +161,7 @@ def status_file_path():
 
 
 def build_whatsapp_summary(report):
-    lines = ["📊 Status da Operacao IA", ""]
+    lines = ["📊 Status do Atendimento IA", ""]
     for item in report["checks"]:
         lines.append(f"{'✅' if item['ok'] else '❌'} {item['service']}: {item['details']}")
     return "\n".join(lines)
@@ -254,7 +254,7 @@ def uninstall_launchagent():
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Monitor da Operacao IA")
+    parser = argparse.ArgumentParser(description="Monitor do Atendimento IA")
     parser.add_argument("--now", action="store_true", help="Roda o health check agora")
     parser.add_argument("--install-launchagent", action="store_true")
     parser.add_argument("--uninstall-launchagent", action="store_true")

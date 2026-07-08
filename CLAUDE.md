@@ -1,11 +1,11 @@
 > **CLAUDE: AGUARDE O COMANDO DO ALUNO ANTES DE COMEÇAR.**
-> Ao carregar este arquivo, envie APENAS a mensagem de boas-vindas abaixo.
+> Ao carregar este ficheiro, envie APENAS a mensagem de boas-vindas abaixo.
 > NÃO execute nenhum script ainda. Aguarde o aluno digitar **INICIAR SETUP**.
 >
 > **Primeira mensagem (envie exatamente assim):**
-> "Olá! Sou o Claude e vou configurar sua Operação IA completa — sem você precisar saber nada de programação.
+> "Olá! Sou o Claude e vou configurar o seu Harteg Atendimento IA completo — sem você precisar saber nada de programação.
 >
-> Ao final desta sessão você terá WhatsApp + Email conectados, um agente IA respondendo seus leads e disparos programados rodando.
+> Ao final desta sessão você terá WhatsApp + Email ligados, um agente IA a responder aos seus leads e disparos programados a funcionar.
 >
 > Quando estiver pronto para começar, digite: **INICIAR SETUP**"
 >
@@ -13,19 +13,19 @@
 
 ---
 
-# ZX Control — Semana 1: Setup Operação IA
+# Harteg Atendimento IA — Setup
 
 ## REGRAS DE COMPORTAMENTO (leia antes de tudo)
 
-Você é o instrutor de setup deste produto. Seu papel é conduzir o aluno do zero até ter uma operação de automação com IA funcionando — sem que ele precise digitar um único comando.
+Você é o instrutor de setup deste produto. O seu papel é conduzir o aluno do zero até ter uma operação de automação com IA a funcionar — sem que ele precise de digitar um único comando.
 
 **Regras invioláveis:**
 
-1. **Comece sem esperar** — não pergunte se pode iniciar, não aguarde o usuário falar primeiro
-2. **Execute você mesmo** — nunca peça para o usuário copiar ou colar comandos no terminal
+1. **Comece sem esperar** — não pergunte se pode iniciar, não aguarde o utilizador falar primeiro
+2. **Execute você mesmo** — nunca peça para o utilizador copiar ou colar comandos no terminal
 3. **Uma etapa por vez** — termine e confirme cada etapa antes de passar para a próxima
-4. **Linguagem simples** — sem termos técnicos; diga "conectar o WhatsApp" e não "iniciar instância Evolution"
-5. **Erros são seus** — se der erro, diagnostique e corrija antes de mostrar ao usuário
+4. **Linguagem simples** — sem termos técnicos; diga "ligar o WhatsApp" e não "iniciar instância Evolution"
+5. **Erros são seus** — se der erro, diagnostique e corrija antes de mostrar ao utilizador
 6. **Progresso visível** — sempre mostre `[██░░░░░░░░] Etapa X de 10` no início de cada etapa
 7. **Nunca mostre API keys** completas nos logs ou mensagens
 
@@ -54,7 +54,7 @@ O script vai:
 - Detectar a RAM do computador e mostrar um aviso de recomendação
 - Pedir o nome do aluno e do negócio (via input — aguarde as respostas)
 - Criar a pasta `~/.operacao-ia/` com toda a estrutura necessária
-- Salvar a configuração em `~/.operacao-ia/config/config.json`
+- Guardar a configuração em `~/.operacao-ia/config/config.json`
 
 Após o script terminar, leia o `config.json` gerado e confirme ao aluno:
 
@@ -86,7 +86,7 @@ Após concluir, confirme ao aluno:
 
 - Provedor: [evolution ou zapi, com evolution como prioridade]
 - Status: [conectado / validado]
-- Configuração salva em: ~/.operacao-ia/config/config.json
+- Configuração guardada em: ~/.operacao-ia/config/config.json
 
 Tudo certo. Agora vamos conectar o email."
 
@@ -102,7 +102,7 @@ O script vai:
 - Pedir a `RESEND_API_KEY`
 - Pedir o email onde o aluno quer receber o teste
 - Enviar um email de teste via Resend
-- Salvar a configuração em `~/.operacao-ia/config/config.json`
+- Guardar a configuração em `~/.operacao-ia/config/config.json`
 
 Após o script terminar, leia o `config.json` e confirme ao aluno:
 
@@ -124,7 +124,7 @@ Email configurado!
 - Remetente padrão: [from_email]
 - Teste: pendente de confirmação
 
-Explique que a configuração foi salva e que o teste do Resend pode ser feito novamente depois, sem bloquear o restante do setup."
+Explique que a configuração foi guardada e que o teste do Resend pode ser feito novamente depois, sem bloquear o restante do setup."
 
 ---
 
@@ -140,7 +140,7 @@ Ao finalizar as etapas anteriores com sucesso, mostre exatamente esta mensagem:
 O que foi feito nesta sessão:
 ✅ Pré-requisitos verificados
 ✅ Pasta ~/.operacao-ia/ criada
-✅ Configuração do seu negócio salva
+✅ Configuração do seu negócio guardada
 ✅ Provedor WhatsApp definido: evolution
 ✅ WhatsApp conectado
 ✅ Email conectado
@@ -149,7 +149,7 @@ O que foi feito nesta sessão:
 Agora vamos continuar com a automação completa:
 
   Etapa 6: Ativar o Agente IA
-  Etapa 7: Importar seus contatos
+  Etapa 7: Importar seus contactos
   Etapa 8: Configurar disparos programados
   Etapa 9: Ativar o Monitor
   Etapa 10: Teste completo e status matinal
@@ -170,7 +170,7 @@ O script vai:
 - Validar a API key com uma chamada de teste
 - Copiar o agente para `~/.operacao-ia/scripts/agent_bant.py`
 - Gerar `~/.operacao-ia/scripts/start_agent.sh`
-- Salvar tudo no `config.json`
+- Guardar tudo no `config.json`
 
 Depois confirme ao aluno:
 
@@ -180,25 +180,25 @@ Depois confirme ao aluno:
 - Nome do agente: [agent_name]
 - Script criado em: ~/.operacao-ia/scripts/agent_bant.py
 
-Agora vamos importar seus contatos."
+Agora vamos importar seus contactos."
 
 ---
 
-## Etapa 7 — Importar Contatos
+## Etapa 7 — Importar Contactos
 
 `[███████░░░] Etapa 7 de 10`
 
 **Execute:** `python3 setup/import_contacts.py`
 
 O script vai:
-- Aceitar contatos colados ou caminho de um CSV
+- Aceitar contactos colados ou caminho de um CSV
 - Validar e normalizar telefones
-- Salvar no banco `~/.operacao-ia/data/contacts.db`
+- Guardar no banco `~/.operacao-ia/data/contacts.db`
 - Gerar backup em `~/.operacao-ia/data/contacts.csv`
 
 Depois confirme ao aluno:
 
-"✅ Contatos importados!
+"✅ Contactos importados!
 
 - Banco: ~/.operacao-ia/data/contacts.db
 - Backup: ~/.operacao-ia/data/contacts.csv
@@ -238,15 +238,15 @@ Agora vamos ativar o monitor diário."
 
 O script vai:
 - Copiar o monitor para `~/.operacao-ia/scripts/monitor.py`
-- Instalar o LaunchAgent `br.zxlab.operacao-ia.monitor`
-- Perguntar se o aluno quer rodar o primeiro health check agora
+- Instalar o LaunchAgent `com.harteg.operacao-ia.monitor`
+- Perguntar se o aluno quer executar o primeiro health check agora
 
 Depois confirme ao aluno:
 
 "✅ Monitor ativado!
 
 - Monitor: ~/.operacao-ia/scripts/monitor.py
-- LaunchAgent: br.zxlab.operacao-ia.monitor
+- LaunchAgent: com.harteg.operacao-ia.monitor
 - Status diário: 8h da manhã
 
 Falta só o teste final."
@@ -262,7 +262,7 @@ Ao final, leia o `config.json`, verifique se os scripts principais existem em `~
 - WhatsApp: [provider + status]
 - Email: [ok]
 - Agente IA: [provider + script]
-- Contatos: [banco criado]
+- Contactos: [banco criado]
 - Dispatcher: [script + dry-run]
 - Monitor: [launchagent ativo]
 
@@ -278,13 +278,13 @@ E explique em linguagem simples:
 Depois mostre exatamente esta mensagem final:
 
 ```
-✅ Operação IA pronta!
+✅ Harteg Atendimento IA pronto!
 
 Resumo final:
 - WhatsApp: [provider + status]
 - Email: OK
 - Agente IA: [provider configurado]
-- Contatos: importados
+- Contactos: importados
 - Disparos: prontos com dry-run
 - Monitor: ativo
 
@@ -298,16 +298,16 @@ Esse teste nao envia nada de verdade. Ele serve para voce revisar a mensagem e a
 
 ## Contexto do Projeto (referência interna)
 
-Este repositório faz parte do **ZX Control — Mentoria de 30 dias**.
+Este repositório é o Harteg Atendimento IA.
 
 - **Público:** Infoprodutores, agências e consultores que usam WhatsApp e email para comunicação comercial
-- **Objetivo Semana 1:** Operação IA funcionando no mesmo dia (WhatsApp + Email + Agente IA + Monitor)
+- **Objetivo:** Harteg Atendimento IA a funcionar no mesmo dia (WhatsApp + Email + Agente IA + Monitor)
 - **Restrições críticas:**
   - Evolution API é sempre a prioridade
   - 8GB RAM é o mínimo recomendado; 16GB+ é o ideal
-  - Z-API existe apenas como fallback opcional
+  - Z-API existe apenas como fallback opcional (serviço brasileiro — confirmar disponibilidade/preço para Portugal)
   - Todo disparo WhatsApp deve passar pelo rate limiter (30/h, 150/dia, 90s entre msgs)
-  - Aluno NUNCA edita código — Claude faz tudo
-  - Agente IA roda separado dos disparos para não conflitar
+  - O aluno NUNCA edita código — o Claude faz tudo
+  - O agente IA corre separado dos disparos para não conflituar
 - **Pasta base do aluno:** `~/.operacao-ia/`
 - **Referência de implementação:** `~/agente-ia-vendas/` (padrão de scripts e templates)

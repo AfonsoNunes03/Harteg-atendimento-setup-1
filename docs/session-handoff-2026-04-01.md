@@ -1,4 +1,4 @@
-# ZX Control Semana 1 — Session Handoff
+# Harteg Atendimento IA — Session Handoff
 
 Data: 2026-04-01
 Repo: `~/projetos/zx-control-semana1/`
@@ -59,7 +59,7 @@ Incluiu:
 - agente BANT com rate limiter + dispatch log nas respostas
 - polling funcional para Evolution
 - deduplicação melhor no fluxo Z-API
-- suporte real a tags na importação de contatos
+- suporte real a tags na importação de contactos
 - setup do agente agora inicia o processo
 
 ### Resiliência validada por smoke test
@@ -100,11 +100,11 @@ Incluiu:
 - scripts de setup foram suavizados para onboarding:
   - erros esperados nao retornam mais `exit 1` em cascata
   - falhas viram `Aviso:` com retorno limpo quando fizer sentido
-  - `setup_email.py` salva a configuracao mesmo se o teste do Resend nao for confirmado na hora
+  - `setup_email.py` guardada a configuracao mesmo se o teste do Resend nao for confirmado na hora
   - `config.email.test_status` pode ser `sent` ou `pending`
 - `.wrangler/` passou a ser ignorado para nao sujar o repo
 
-## Estado atual dos arquivos principais
+## Estado atual dos ficheiros principais
 - `CLAUDE.md` cobre Etapas 1-10
 - `README.md` está alinhado com Phase 1, 2 e 3
 - scripts-fonte de deploy vivem em `scripts/`
@@ -127,7 +127,7 @@ Incluiu:
 ## Validações já feitas
 - `python3 -m py_compile` passou para todos os `.py` em `setup/`, `scripts/` e `templates/`
 - smoke tests locais em `HOME=/tmp/zxcontrol-smoke/home` validaram:
-  - importação de contatos
+  - importação de contactos
   - `dispatcher.py --dry-run`
   - filtro por tag
   - geração de relatórios sem overwrite
@@ -140,7 +140,7 @@ Incluiu:
 - teste real com Z-API
 - teste real com Resend
 - teste real do agente respondendo uma conversa
-- teste real do dispatcher com 1 contato
+- teste real do dispatcher com 1 contacto
 - teste real do LaunchAgent do monitor no macOS
 
 ## Melhor próximo passo em outra sessão
@@ -153,5 +153,5 @@ Incluiu:
 Ao abrir outra sessão do Claude Code, use algo como:
 
 ```text
-Leia docs/session-handoff-2026-04-01.md e continue a homologação final do ZX Control Semana 1.
+Leia docs/session-handoff-2026-04-01.md e continue a homologação final do Harteg Atendimento IA.
 ```

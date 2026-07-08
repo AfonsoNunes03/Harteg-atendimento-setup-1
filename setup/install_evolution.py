@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Instala e configura a Evolution API localmente para a Operacao IA.
+Instala e configura a Evolution API localmente para o Atendimento IA.
 """
 
 import json
@@ -25,7 +25,7 @@ EVOLUTION_URL = "http://localhost:8080"
 def load_config():
     if not CONFIG_PATH.exists():
         print("Aviso: configuracao nao encontrada.")
-        print("   Rode primeiro: python3 setup/setup_environment.py")
+        print("   Execute primeiro: python3 setup/setup_environment.py")
         return None
 
     return json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
@@ -49,23 +49,23 @@ def http_get_json(url, headers=None, timeout=5):
 
 
 def evolution_is_healthy():
+    # Esta versao da Evolution API nao expoe /health; o endpoint raiz "/"
+    # responde 200 com {"status":200,"message":"Welcome to the Evolution API..."}
+    # quando o servico esta pronto.
     try:
-        payload = http_get_json(f"{EVOLUTION_URL}/health", timeout=3)
+        payload = http_get_json(f"{EVOLUTION_URL}/", timeout=3)
     except Exception:
         return False
 
     if isinstance(payload, dict):
-        if payload.get("status") == "ok":
-            return True
-        if payload.get("message"):
-            return True
+        return payload.get("status") == 200
     return False
 
 
 def ensure_provider(config):
     provider = config.get("whatsapp_provider")
     if provider != "evolution":
-        print("Aviso: este setup deve rodar com Evolution API como provedor.")
+        print("Aviso: este setup deve correr com a Evolution API como provedor.")
         print(f"   Provedor atual no config.json: {provider or 'nao definido'}")
         return False
     return True
@@ -86,6 +86,11 @@ def ensure_evolution_files():
 
     api_key = read_env_value("AUTHENTICATION_API_KEY") or secrets.token_hex(16).upper()
     jwt_secret = read_env_value("JWT_SECRET") or secrets.token_urlsafe(48)
+    # A imagem evoapicloud/evolution-api:latest so aceita postgresql, mysql ou
+    # psql_bouncer como DATABASE_PROVIDER (sqlite foi removido); por isso
+    # subimos um Postgres local no proprio docker-compose.
+    db_password = read_env_value("POSTGRES_PASSWORD") or secrets.token_urlsafe(24)
+    db_uri = f"postgresql://evolution:{db_password}@postgres:5432/evolution?schema=public"
 
     env_content = "\n".join(
         [
@@ -94,8 +99,8 @@ def ensure_evolution_files():
             "SERVER_PORT=8080",
             f"SERVER_URL={EVOLUTION_URL}",
             "DEL_INSTANCE=false",
-            "DATABASE_PROVIDER=sqlite",
-            "DATABASE_CONNECTION_URI=file:/evolution/store/evolution.db",
+            "DATABASE_PROVIDER=postgresql",
+            f"DATABASE_CONNECTION_URI={db_uri}",
             "DATABASE_SAVE_DATA_INSTANCE=true",
             "DATABASE_SAVE_DATA_NEW_MESSAGE=true",
             "DATABASE_SAVE_MESSAGE_UPDATE=true",
@@ -110,6 +115,7 @@ def ensure_evolution_files():
             "AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES=true",
             f"JWT_SECRET={jwt_secret}",
             "LANGUAGE=pt-BR",
+            f"POSTGRES_PASSWORD={db_password}",
             "",
         ]
     )
@@ -118,9 +124,26 @@ def ensure_evolution_files():
     compose_content = "\n".join(
         [
             "services:",
+            "  postgres:",
+            "    image: postgres:15-alpine",
+            "    restart: unless-stopped",
+            "    environment:",
+            "      POSTGRES_USER: evolution",
+            "      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}",
+            "      POSTGRES_DB: evolution",
+            "    volumes:",
+            "      - ./postgres-data:/var/lib/postgresql/data",
+            "    healthcheck:",
+            "      test: [\"CMD-SHELL\", \"pg_isready -U evolution\"]",
+            "      interval: 5s",
+            "      timeout: 5s",
+            "      retries: 10",
             "  evolution-api:",
             f"    image: {EVOLUTION_IMAGE}",
             "    restart: unless-stopped",
+            "    depends_on:",
+            "      postgres:",
+            "        condition: service_healthy",
             "    env_file:",
             "      - .env",
             "    ports:",
@@ -140,13 +163,13 @@ def run_command(cmd, cwd=None):
 
 
 def install_and_start():
-    print("  Baixando imagem da Evolution API...")
+    print("  A transferir a imagem da Evolution API...")
     pull_result = run_command(["docker", "pull", EVOLUTION_IMAGE])
     if pull_result.returncode != 0:
-        print("Aviso: nao foi possivel baixar a imagem da Evolution API.")
+        print("Aviso: nao foi possivel transferir a imagem da Evolution API.")
         return False
 
-    print("  Subindo container com docker compose...")
+    print("  A subir o container com docker compose...")
     compose_result = run_command(
         ["docker", "compose", "up", "-d"],
         cwd=str(EVOLUTION_DIR),
@@ -180,14 +203,14 @@ def main():
 
     api_key = ensure_evolution_files()
 
-    print("  Verificando Evolution API em http://localhost:8080/health ...")
+    print("  A verificar a Evolution API em http://localhost:8080/health ...")
     if evolution_is_healthy():
-        print("  ✅ Evolution API ja esta rodando.")
+        print("  ✅ Evolution API já está a funcionar.")
     else:
         if not install_and_start():
             print("  A configuracao da Evolution ficou pendente.")
             return
-        print("  Aguardando API ficar pronta...")
+        print("  A aguardar que a API fique pronta...")
         if not wait_until_ready():
             print("Aviso: a Evolution demorou mais do que o esperado para responder em /health.")
             print("   Tente verificar os logs com: docker compose logs")
@@ -207,7 +230,7 @@ def main():
     print()
     print("✅ Evolution API configurada!")
     print(f"  Base URL: {EVOLUTION_URL}")
-    print("  API key salva em ~/.operacao-ia/config/config.json")
+    print("  API key guardada em ~/.operacao-ia/config/config.json")
     print("  Proxima etapa: python3 setup/connect_whatsapp.py")
     print()
 

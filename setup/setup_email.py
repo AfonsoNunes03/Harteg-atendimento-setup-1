@@ -20,7 +20,7 @@ DEFAULT_FROM_EMAIL = "onboarding@resend.dev"
 def load_config():
     if not CONFIG_PATH.exists():
         print("❌ Configuração não encontrada.")
-        print("   Rode primeiro: python3 setup/setup_environment.py")
+        print("   Execute primeiro: python3 setup/setup_environment.py")
         sys.exit(1)
     return json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
 
@@ -60,10 +60,10 @@ def send_test_email(api_key, recipient_email):
         {
             "from": DEFAULT_FROM_EMAIL,
             "to": [recipient_email],
-            "subject": "Teste ZX Control — Resend conectado",
+            "subject": "Teste Harteg — Resend ligado",
             "html": (
-                "<strong>ZX Control</strong><br>"
-                "Seu email foi conectado com sucesso na Semana 1."
+                "<strong>Harteg</strong><br>"
+                "O teu email foi ligado com sucesso."
             ),
         }
     ).encode("utf-8")
@@ -74,7 +74,7 @@ def send_test_email(api_key, recipient_email):
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "User-Agent": "ZXControl/1.0",
+            "User-Agent": "Harteg/1.0",
         },
         method="POST",
     )
