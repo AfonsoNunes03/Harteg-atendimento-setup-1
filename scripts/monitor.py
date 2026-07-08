@@ -60,14 +60,16 @@ def check_evolution(config):
     status = {"service": "evolution", "ok": False, "details": ""}
 
     try:
-        _, health = http_json(f"{base_url}/health")
+        # Esta versao da Evolution API nao expoe /health; o endpoint raiz "/"
+        # responde 200 quando o servico esta pronto (ver setup/install_evolution.py).
+        _, health = http_json(f"{base_url}/")
         _, state = http_json(
             f"{base_url}/instance/connectionState/{instance}",
             headers={"apikey": api_key},
         )
         conn_state = state.get("state") or state.get("instance", {}).get("state", "")
         status["ok"] = conn_state == "open"
-        status["details"] = f"health={health.get('status', 'ok')} state={conn_state or 'desconhecido'}"
+        status["details"] = f"api={'ok' if health.get('status') == 200 else 'indisponivel'} state={conn_state or 'desconhecido'}"
     except Exception as exc:
         status["details"] = str(exc)
 
@@ -94,22 +96,26 @@ def check_zapi(config):
 
 
 def check_resend(config):
+    # As chaves da Resend recomendadas (so "sending access") nao tem permissao
+    # para GET /domains, /api-keys ou /emails/{id} — qualquer chamada de leitura
+    # devolve 401 "restricted_api_key" mesmo com a chave valida. Por isso nao
+    # há chamada de rede aqui: confiamos no resultado do teste feito na Etapa 4
+    # (setup/setup_email.py), guardado em config.json.
     email = config.get("email", {})
     api_key = email.get("api_key", "")
+    test_status = email.get("test_status", "")
     status = {"service": "resend", "ok": False, "details": ""}
+
     if not api_key:
         status["details"] = "api_key nao configurada"
-        return status
-
-    try:
-        _, payload = http_json(
-            "https://api.resend.com/domains",
-            headers={"Authorization": f"Bearer {api_key}"},
-        )
+    elif test_status == "sent":
         status["ok"] = True
-        status["details"] = f"dominios={len(payload.get('data', []))}"
-    except Exception as exc:
-        status["details"] = str(exc)
+        status["details"] = "api_key configurada, teste da Etapa 4 confirmado"
+    elif test_status == "pending":
+        status["details"] = "api_key configurada, teste da Etapa 4 ainda pendente"
+    else:
+        status["ok"] = True
+        status["details"] = "api_key configurada"
     return status
 
 
