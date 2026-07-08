@@ -38,7 +38,7 @@ Hoje vais sair do ZERO com uma operação de automação com IA a funcionar no t
 **Como começar (agora):**
 
 ```
-git clone <URL_DO_TEU_REPOSITORIO_HARTEG>
+git clone https://github.com/AfonsoNunes03/Harteg-atendimento-setup-1.git
 cd harteg-atendimento-setup-1
 claude
 ```
@@ -121,7 +121,7 @@ O Claude (assistente de IA) vai conduzir-te por **10 etapas** — não precisas 
 
 ```bash
 # 1. Clona o repositório
-git clone <URL_DO_TEU_REPOSITORIO_HARTEG>
+git clone https://github.com/AfonsoNunes03/Harteg-atendimento-setup-1.git
 
 # 2. Entra na pasta
 cd harteg-atendimento-setup-1
