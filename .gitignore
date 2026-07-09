@@ -13,3 +13,8 @@ venv/
 
 # SO
 .DS_Store
+
+# Notas internas de planeamento/desenvolvimento (nao fazem parte do
+# produto entregue ao aluno)
+.planning/
+docs/session-handoff-*.md
